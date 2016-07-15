@@ -11,7 +11,19 @@
 #if (NGX_HAVE_OPENSSL_MD5_H)
 #include <openssl/md5.h>
 #else
+
+#if defined nginx_version && nginx_version >= 1011002
+#include <ngx_md5.h>
+
+#define  MD5Init    ngx_md5_init
+#define  MD5Update  ngx_md5_update
+#define  MD5Final   ngx_md5_final
+#define  MD5_CTX    ngx_md5_t
+
+#else
 #include <md5.h>
+#endif
+
 #endif
 
 #if (NGX_OPENSSL_MD5)
@@ -20,10 +32,22 @@
 #define  MD5Final   MD5_Final
 #endif
 
+
 #if (NGX_HAVE_OPENSSL_SHA1_H)
 #include <openssl/sha.h>
 #else
+
+#if defined nginx_version && nginx_version >= 1011002
+#include <ngx_sha1.h>
+
+#define  SHA1_Init    ngx_sha1_init
+#define  SHA1_Update  ngx_sha1_update
+#define  SHA1_Final   ngx_sha1_final
+#define  SHA_CTX      ngx_sha1_t
+
+#else
 #include <sha.h>
+#endif
 #endif
 
 #define NGX_ACCESSKEY_MD5 1
